@@ -1,31 +1,27 @@
+//LI class constructor
 function List(obj) {
     this.listObject = obj;
     this.parent = obj.parentNode;
 }
 
-List.prototype = {
-    constructor: List,
-
-    getListObject: function() {
+//Li class methods
+List.prototype.getListObject = function() {
         return this.listObject;
-    },
+};
 
-    getParent: function() {
-        return this.parent;
-    },
+List.prototype.init = function () {
+    var listObj = this.getListObject(),
+        $self = this;
 
-    init: function () {
-        var listObj = this.getListObject(),
-            $self = this;
+    listObj.setAttribute("draggable", "true");
 
-        listObj.setAttribute("draggable", "true");
+    listObj.ondragstart = function (ev) {
+        $self.drag(ev);
+    };
+};
 
-        listObj.ondragstart = function (ev) {
-            $self.drag(ev);
-        };
-    },
+List.prototype.drag = function(ev) {
+    ev.dataTransfer.setData('object', this.getListObject().outerHTML);
 
-    drag: function(ev) {
-        ev.dataTransfer.setData("text", ev.target.classList);
-    }
+    console.log("DRAG", this.getListObject().outerHTML); /////////////
 };
