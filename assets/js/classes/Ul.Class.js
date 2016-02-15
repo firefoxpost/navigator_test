@@ -17,14 +17,21 @@ Ul.prototype.drop = function(ev) {
 
     var data = ev.dataTransfer.getData('object');
 
-    console.log("DROP", data);  /////////////////////
-
-    this.addLi(data);
+    this.addLi(ev, data);
+    this.showBehavior();
 };
 
-Ul.prototype.addLi = function(data) {
-    this.getUlObject().innerHTML += data;
+Ul.prototype.addLi = function(ev, data) {
+    if(this.getUlObject().childElementCount === 0) {
+        ev.target.appendChild(document.getElementById(data));
+    }else {
+        ev.target.parentElement.appendChild(document.getElementById(data));
+    }
+
+    document.getElementById(data).removeAttribute('id');
 };
+
+Ul.prototype.showBehavior = function() {};
 
 Ul.prototype.init = function() {
     var obj = this.getUlObject(),
@@ -50,7 +57,7 @@ UlBordered.prototype = Object.create(Ul.prototype);
 UlBordered.prototype.constructor = UlBordered;
 
 //UL class methods
-UlBordered.prototype.addLi = function (data) {
+UlBordered.prototype.showBehavior = function () {
     var $self = this;
 
     $self.getUlObject().classList.add('b-list__bordered');
@@ -58,8 +65,6 @@ UlBordered.prototype.addLi = function (data) {
     setTimeout(function() {
         $self.getUlObject().classList.remove('b-list__bordered');
     }, 200);
-
-    $self.getUlObject().innerHTML += data;
 };
 
 //UL class constructor
@@ -73,7 +78,7 @@ UlBackgrounded.prototype = Object.create(Ul.prototype);
 UlBackgrounded.prototype.constructor = UlBackgrounded;
 
 //UL class methods
-UlBackgrounded.prototype.addLi = function (data) {
+UlBackgrounded.prototype.showBehavior = function () {
     var $self = this;
 
     $self.getUlObject().classList.add('b-list__bordered_with-background');
@@ -81,6 +86,22 @@ UlBackgrounded.prototype.addLi = function (data) {
     setTimeout(function() {
         $self.getUlObject().classList.remove('b-list__bordered_with-background');
     }, 200);
+};
 
-    $self.getUlObject().innerHTML += data;
+UlBackgrounded.prototype.addLi = function(ev, data) {
+    var movedObj = document.getElementById(data),
+        cloneObj = movedObj.cloneNode(true);
+
+    cloneObj.removeAttribute('id');
+
+    if(this.getUlObject().childElementCount === 0) {
+        ev.target.appendChild(movedObj);
+    }else {
+        ev.target.parentElement.appendChild(movedObj);
+    }
+
+    document.getElementsByClassName('b-list')[0].appendChild(cloneObj);
+    document.getElementById(data).removeAttribute('id');
+
+    new List(cloneObj).init();
 };

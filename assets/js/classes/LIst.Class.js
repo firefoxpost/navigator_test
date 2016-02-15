@@ -21,7 +21,6 @@ List.prototype.init = function () {
 };
 
 List.prototype.drag = function(ev) {
-    ev.dataTransfer.setData('object', this.getListObject().outerHTML);
-
-    console.log("DRAG", this.getListObject().outerHTML); /////////////
+    this.getListObject().setAttribute("id", "drag_object");
+    ev.dataTransfer.setData('object', this.getListObject().id);
 };
