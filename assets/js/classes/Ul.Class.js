@@ -31,7 +31,9 @@ Ul.prototype.addLi = function(ev, data) {
     document.getElementById(data).removeAttribute('id');
 };
 
-Ul.prototype.showBehavior = function() {};
+Ul.prototype.showBehavior = function() {
+    return true;
+};
 
 Ul.prototype.init = function() {
     var obj = this.getUlObject(),

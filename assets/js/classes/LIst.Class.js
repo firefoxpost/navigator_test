@@ -1,7 +1,6 @@
 //LI class constructor
 function List(obj) {
     this.listObject = obj;
-    this.parent = obj.parentNode;
 }
 
 //Li class methods
